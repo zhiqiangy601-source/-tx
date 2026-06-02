@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>携恩科技市场经理面试策略版</title>
+<style>
+/* ============================================================
+   product-launch 风格 — 白底科技蓝橙渐变，大字克制
+   ============================================================ */
+.tpl-product-launch{
+  --bg:#ffffff;--bg-soft:#f5f5f7;--surface:#ffffff;--surface-2:#f2f2f6;
+  --border:rgba(10,10,18,.08);--border-strong:rgba(10,10,18,.18);
+  --text-1:#0a0a12;--text-2:#3a3a44;--text-3:#8a8a96;
+  --accent:#1f6feb;--accent-2:#0ea5e9;--accent-3:#6366f1;
+  --grad:linear-gradient(120deg,#1f6feb 0%,#0ea5e9 60%,#6366f1 100%);
+  --grad-soft:linear-gradient(135deg,#eef2ff,#f5ecff);
+  --radius:22px;--radius-sm:14px;--radius-lg:32px;
+  --shadow:0 20px 60px rgba(10,10,18,.1);
+  --shadow-lg:0 30px 80px rgba(10,10,18,.14);
+  font-family:'Inter','Noto Sans SC',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text-1);font-family:inherit;line-height:1.6}
+
+.deck{position:relative;width:100vw;height:100vh;overflow:hidden}
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  padding:72px 96px;
+  opacity:0;pointer-events:none;
+  transition:opacity .4s cubic-bezier(.4,0,.2,1);
+  overflow:hidden;
+}
+.slide.is-active{opacity:1;pointer-events:auto}
+.slide.dark{background:#0a1e46;color:#f0f4f9}
+
+/* 工具栏 */
+#_tb{position:fixed;top:12px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.96);border:1px solid rgba(10,10,18,.12);border-radius:12px;padding:6px 10px;display:flex;gap:4px;z-index:9999;box-shadow:0 4px 24px rgba(10,10,18,.1);align-items:center;backdrop-filter:blur(12px)}
+#_tb button{background:#f5f5f7;border:1px solid rgba(10,10,18,.15);color:#0a0a12;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-family:inherit;font-weight:600}
+#_tb button:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+#_tb .sep{width:1px;height:20px;background:rgba(10,10,18,.1);margin:0 4px}
+#_tb .pg{color:var(--accent);font-size:13px;font-weight:700;padding:0 10px;letter-spacing:1px}
+/* 对话框 */
+#_dlg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99999;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+#_dlg>div{background:#fff;border-radius:16px;padding:24px;width:440px;color:var(--text-1);font-family:inherit;box-shadow:0 20px 60px rgba(10,10,18,.2)}
+#_dlg h3{margin:0 0 14px;font-size:15px;font-weight:700;color:var(--accent)}
+#_dlg input{width:100%;padding:10px 14px;border-radius:8px;border:1px solid rgba(10,10,18,.15);background:#fafafa;color:var(--text-1);font-size:13px;box-sizing:border-box;outline:none;margin-bottom:10px;font-family:inherit}
+#_dlg input:focus{border-color:var(--accent);background:#fff}
+#_dlg .preview{min-height:56px;margin-top:6px;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#f5f5f7}
+#_dlg .preview img{max-width:100%;max-height:80px;border-radius:6px}
+#_dlg .btns{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+#_dlg .btns button{background:var(--accent);border:none;color:#fff;padding:8px 18px;border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;font-weight:600}
+#_dlg .btns button.cancel{background:#f5f5f7;color:var(--text-2);border:1px solid rgba(10,10,18,.15);cursor:pointer}
+
+/* 排版 */
+.kicker{font-size:13px;font-weight:700;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+.slide.dark .kicker{color:var(--accent-2)}
+.h1{font-size:80px;line-height:.96;font-weight:900;letter-spacing:-.04em;margin:0 0 16px;color:var(--text-1)}
+.h2{font-size:48px;font-weight:800;letter-spacing:-.03em;margin:0 0 12px;color:var(--text-1)}
+.h3{font-size:32px;font-weight:700;letter-spacing:-.02em;margin:0 0 10px}
+.h4{font-size:20px;font-weight:600;margin:0 0 8px}
+.slide.dark .h1,.slide.dark .h2,.slide.dark .h3,.slide.dark .h4{color:#fff}
+.lede{font-size:22px;line-height:1.55;color:var(--text-2);font-weight:300;max-width:60ch}
+.slide.dark .lede,.slide.dark .dim{color:rgba(240,244,249,.7)}
+.dim{color:var(--text-2)}
+
+/* 通用布局 */
+.grid{display:grid;gap:16px}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+.stack>*{margin-top:12px}
+.row{display:flex;gap:24px;align-items:center}
+
+/* 卡片 */
+.card{padding:28px 28px;border-radius:var(--radius);background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow)}
+.feature-card{padding:32px 28px;border-radius:var(--radius-lg);background:var(--surface);border:1px solid var(--border);position:relative;overflow:hidden}
+.feature-card .icon{width:52px;height:52px;border-radius:16px;background:var(--grad);display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px;font-weight:900;margin-bottom:16px}
+
+/* 表格 */
+.table{width:100%;border-collapse:collapse;font-size:15px}
+.table th{text-align:left;padding:14px 18px;background:var(--surface-2);border:1px solid var(--border);font-weight:700;color:var(--text-1);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.table td{padding:13px 18px;border:1px solid var(--border);color:var(--text-2);vertical-align:top;line-height:1.65}
+.table tr:hover td{background:rgba(31,111,235,.04)}
+.table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border)}
+
+/* 页脚 */
+.deck-footer{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--text-3);padding-top:20px;border-top:1px solid var(--border);margin-top:auto}
+.slide.dark .deck-footer{border-top-color:rgba(255,255,255,.1);color:rgba(240,244,249,.45)}
+
+/* 标签 */
+.tag{display:inline-block;padding:4px 10px;border-radius:6px;background:rgba(31,111,235,.08);border:1px solid rgba(31,111,235,.2);font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.05em;text-transform:uppercase}
+
+/* 编辑模式 */
+body.edit-on .slide.is-active{outline:2px dashed rgba(31,111,235,.35)}
+body.edit-on [contenteditable]{caret-color:var(--accent);outline:none;border-radius:3px;min-height:1em}
+body.edit-on [contenteditable]:focus{background:rgba(31,111,235,.05)}
+</style>
+</head>
+<body class="tpl-product-launch">
+
+<div class="deck">
+
+<!-- ===== SLIDE 1: COVER ===== -->
+<section class="slide is-active dark" data-title="Cover">
+  <div style="position:absolute;right:-60px;top:50%;transform:translateY(-50%);width:580px;height:580px;border-radius:50%;background:var(--grad);filter:blur(80px);opacity:.35"></div>
+  <div style="position:relative;z-index:1;padding:0">
+    <div class="brand" style="color:rgba(255,255,255,.6);margin-bottom:40px">◎ XienTech</div>
+    <p class="kicker" style="color:var(--accent-2);margin-bottom:20px">Low-altitude Digital Operation · Interview Strategy</p>
+    <h1 class="h1" style="color:#fff;font-size:72px;max-width:14ch;line-height:1.05">
+      携恩科技<br><span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">市场经理</span>
+    </h1>
+    <p class="lede" style="color:rgba(240,244,249,.7);margin-top:16px;max-width:44ch">
+      低空数字运营服务商 · 市场转译者 · 销售赋能者 · 内容资产建设者
+    </p>
+    <div style="display:flex;gap:40px;margin-top:40px">
+      <div style="text-align:center">
+        <div style="font-size:52px;font-weight:900;color:#fff;line-height:1">13</div>
+        <div style="color:rgba(240,244,249,.55);font-size:12px;margin-top:6px;letter-spacing:.05em">年品牌公关经验</div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,.15)"></div>
+      <div style="text-align:center">
+        <div style="font-size:52px;font-weight:900;color:var(--accent-2);line-height:1">10+</div>
+        <div style="color:rgba(240,244,249,.55);font-size:12px;margin-top:6px;letter-spacing:.05em">大客户品牌服务</div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,.15)"></div>
+      <div style="text-align:center">
+        <div style="font-size:52px;font-weight:900;color:var(--accent-3);line-height:1">5+</div>
+        <div style="color:rgba(240,244,249,.55);font-size:12px;margin-top:6px;letter-spacing:.05em">AI工具工作流</div>
+      </div>
+    </div>
+  </div>
+  <div class="deck-footer">
+    <span>yan zhiqiang · 面试策略版</span>
+    <span class="slide-number">1 / 13</span>
+  </div>
+</section>
+
+<!-- ===== SLIDE 2: 岗位理解 ===== -->
+<section class="slide" data-title="岗位理解">
+  <p class="kicker">01 · Positioning</p>
+  <h2 class="h2">我不是来卖无人机的<br>我是来把低空技术翻译成客户购买理由的</h2>
+  <div style="display:grid;grid-template-columns:2fr 1fr;gap:32px;margin-top:32px">
+    <div>
+      <div class="card" style="border-left:3px solid var(--accent)">
+        <h4 style="color:var(--accent);font-size:12px;letter-spacing:.08em;margin-bottom:10px">POSITIONING</h4>
+        <h3 class="h3" style="margin-bottom:12px">低空数字运营服务商</h3>
+        <p class="dim" style="font-size:16px;line-height:1.7">无人机飞行 + 时空数据采集 + AI识别 + 实景三维数字孪生 + 行业治理场景<br>= 从"飞行采集"到"数据治理"的闭环服务</p>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="tag" style="padding:8px 14px;font-size:12px;border-left:3px solid var(--accent)">🌐 市场转译者</div>
+      <div class="tag" style="padding:8px 14px;font-size:12px;border-left:3px solid var(--accent-2)">📦 销售赋能者</div>
+      <div class="tag" style="padding:8px 14px;font-size:12px;border-left:3px solid var(--accent-3)">📣 内容资产者</div>
+      <div class="tag" style="padding:8px 14px;font-size:12px;border-left:3px solid #6366f1">🤖 AI提效者</div>
+    </div>
+  </div>
+  <div class="deck-footer">
+    <span>01 · 岗位理解</span><span>2 / 13</span>
+  </div>
+</section>
+
+<!-- ===== SLIDE 3: 匹配逻辑 ===== -->
+<section class="slide" data-title="匹配逻辑">
+  <p class="kicker">02 · Fit</p>
+  <h2 class="h2" style="font-size:42px">13年整合营销经验 · 可迁移能力的精准匹配</h2>
+  <p class="dim" style="margin-bottom:24px">服务龙湖 · 华润 · 新希望乳业 · 王老吉 · 回力1927</p>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th style="width:18%">携恩岗位需求</th><th style="width:38%">我的可迁移能力</th><th style="width:44%">可落地价值</th></tr></thead>
+      <tbody>
+        <tr><td style="color:var(--accent);font-weight:700">市场调研</td><td>品牌策略 · 竞品分析 · 客户需求拆解</td><td>建立政策、招标、竞品、客户动态情报库</td></tr>
+        <tr><td style="color:var(--accent);font-weight:700">品牌宣传</td><td>品牌全案 · 整合营销 · 公关传播</td><td>重构"低空数字运营服务商"定位表达</td></tr>
+        <tr><td style="color:var(--accent-2);font-weight:700">自媒体运营</td><td>微信 · 抖音 · 小红书内容经验</td><td>建立B端深度内容与C端场景故事</td></tr>
+        <tr><td style="color:var(--accent-2);font-weight:700">市场活动</td><td>大型活动和跨部门项目统筹</td><td>支撑低空展会、行业论坛、客户沙龙</td></tr>
+        <tr><td style="color:var(--accent-3);font-weight:700">宣传资料</td><td>PPT · 视频脚本 · 传播物料经验</td><td>建立销售PPT、案例库、一页纸方案</td></tr>
+        <tr><td style="color:#6366f1;font-weight:700">AI工具</td><td>Codex · Hermes · ComfyUI工作流探索</td><td>提高资料整理、方案初稿、内容转化效率</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="display:flex;align-items:center;gap:14px;margin-top:16px;padding:14px 18px;background:var(--surface-2);border-radius:var(--radius);border:1px solid var(--border)">
+    <div style="font-size:20px;color:var(--accent);font-weight:700">→</div>
+    <div>
+      <div style="color:var(--accent);font-size:12px;font-weight:700;margin-bottom:3px">切入点</div>
+      <div style="color:var(--text-2);font-size:14px">把低空技术能力转化为客户语言、销售资产、传播内容和可复用市场体系</div>
+    </div>
+  </div>
+  <div class="deck-footer"><span>02 · 匹配逻辑</span><span>3 / 13</span></div>
+</section>
+
+<!-- ===== SLIDE 4: 市场判断 ===== -->
+<section class="slide dark" data-title="市场判断">
+  <p class="kicker">03 · Market Structure</p>
+  <h2 class="h2" style="color:#fff;font-size:44px">低空经济不是单一市场，而是四层</h2>
+  <p class="lede" style="color:rgba(240,244,249,.7);margin-bottom:28px">客户买的不是无人机，而是数据采集 + 智能识别 + 监管闭环能力</p>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+    <div class="feature-card" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)">
+      <div class="icon" style="background:linear-gradient(120deg,#1f6feb,#0ea5e9)">1</div>
+      <h4 style="color:#fff;font-size:16px;margin-bottom:6px">设备层</h4>
+      <p class="dim" style="color:rgba(240,244,249,.65);font-size:13px;line-height:1.6;margin-bottom:10px">无人机 · 无人机场 · 载荷 · 传感器</p>
+      <div style="padding:5px 10px;background:rgba(31,111,235,.2);border-radius:6px;font-size:11px;color:#79c0ff;text-align:center;font-weight:600">大疆强，不正面竞争</div>
+    </div>
+    <div class="feature-card" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)">
+      <div class="icon" style="background:linear-gradient(120deg,#1f6feb,#0ea5e9)">2</div>
+      <h4 style="color:#fff;font-size:16px;margin-bottom:6px">作业层</h4>
+      <p class="dim" style="color:rgba(240,244,249,.65);font-size:13px;line-height:1.6;margin-bottom:10px">巡检 · 测绘 · 应急 · 环保 · 安防</p>
+      <div style="padding:5px 10px;background:rgba(31,111,235,.2);border-radius:6px;font-size:11px;color:#79c0ff;text-align:center;font-weight:600">FaaS降低客户成本</div>
+    </div>
+    <div class="feature-card" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)">
+      <div class="icon" style="background:linear-gradient(120deg,#1f6feb,#0ea5e9)">3</div>
+      <h4 style="color:#fff;font-size:16px;margin-bottom:6px">平台层</h4>
+      <p class="dim" style="color:rgba(240,244,249,.65);font-size:13px;line-height:1.6;margin-bottom:10px">任务调度 · 设备管理 · 数据处理</p>
+      <div style="padding:5px 10px;background:rgba(31,111,235,.2);border-radius:6px;font-size:11px;color:#79c0ff;text-align:center;font-weight:600">Avigator承接流程</div>
+    </div>
+    <div class="feature-card" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)">
+      <div class="icon" style="background:linear-gradient(120deg,#1f6feb,#0ea5e9)">4</div>
+      <h4 style="color:#fff;font-size:16px;margin-bottom:6px">数据与治理</h4>
+      <p class="dim" style="color:rgba(240,244,249,.65);font-size:13px;line-height:1.6;margin-bottom:10px">AI识别 · 数字孪生 · 问题闭环</p>
+      <div style="padding:5px 10px;background:rgba(31,111,235,.2);border-radius:6px;font-size:11px;color:#79c0ff;text-align:center;font-weight:600">高价值层</div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px">
+    <div style="padding:12px 14px;background:rgba(255,255,255,.04);border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.08)">
+      <div style="color:#fff;font-size:13px;font-weight:700;margin-bottom:4px">大疆</div>
+      <div style="color:rgba(240,244,249,.6);font-size:12px;line-height:1.5">强在设备与行业生态 → 携恩强调本地化运营、数据治理和场景落地能力</div>
+    </div>
+    <div style="padding:12px 14px;background:rgba(255,255,255,.04);border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.08)">
+      <div style="color:#fff;font-size:13px;font-weight:700;margin-bottom:4px">复亚智能等</div>
+      <div style="color:rgba(240,244,249,.6);font-size:12px;line-height:1.5">强在无人值守设备 → 携恩强调"机场+平台+数据+治理闭环"</div>
+    </div>
+    <div style="padding:12px 14px;background:rgba(255,255,255,.04);border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.08)">
+      <div style="color:#fff;font-size:13px;font-weight:700;margin-bottom:4px">中科星图等</div>
+      <div style="color:rgba(240,244,249,.6);font-size:12px;line-height:1.5">强在城市级平台 → 携恩强调真实飞行、真实数据、真实交付</div>
+    </div>
+    <div style="padding:12px 14px;background:rgba(255,255,255,.04);border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.08)">
+      <div style="color:#fff;font-size:13px;font-weight:700;margin-bottom:4px">系统集成商</div>
+      <div style="color:rgba(240,244,249,.6);font-size:12px;line-height:1.5">强在客户关系 → 携恩成为其低空感知与数据采集能力模块</div>
+    </div>
+  </div>
+  <div class="deck-footer"><span>03 · 市场判断</span><span>4 / 13</span></div>
+</section>
+
+<!-- ===== SLIDE 5: 行业案例 ===== -->
+<section class="slide" data-title="行业案例">
+  <p class="kicker">04 · Case Study</p>
+  <h2 class="h2" style="font-size:42px">竞品推广端口分析 · 借鉴与差异化</h2>
+  <div class="table-wrap" style="margin-top:24px">
+    <table class="table">
+      <thead><tr><th style="width:14%">案例</th><th style="width:42%">值得借鉴</th><th style="width:44%">对携恩的启发</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag">沃飞长空</span></td><td>低空出行 · 城市交通 · 生态共建 · 商业化验证</td><td>不能只讲无人机，要讲低空数据如何进入城市治理和园区运营</td></tr>
+        <tr><td><span class="tag">大疆行业应用</span></td><td>按行业解决方案组织内容，强调公共安全、能源、测绘</td><td>建立行业解决方案页、案例库、客户FAQ</td></tr>
+        <tr><td><span class="tag">复亚智能</span></td><td>7×24无人值守 · 常态化巡检</td><td>可借鉴"无人值守"表达，但要上升到平台+数据+治理闭环</td></tr>
+        <tr><td><span class="tag">中科星图等</span></td><td>城市级平台 · 数字底座 · 空天地一体化</td><td>避免宏大叙事，强调真实飞行、真实数据、真实交付</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px">
+    <div style="padding:20px 24px;background:var(--grad);border-radius:var(--radius-lg);text-align:center">
+      <div style="font-size:22px;margin-bottom:8px">👤</div>
+      <div style="color:#fff;font-size:14px;font-weight:700">创始人/高管</div>
+      <div style="color:rgba(255,255,255,.7);font-size:12px;margin-top:4px">讲低空数字运营，建立行业权威</div>
+    </div>
+    <div style="padding:20px 24px;background:var(--grad);border-radius:var(--radius-lg);text-align:center">
+      <div style="font-size:22px;margin-bottom:8px">🔧</div>
+      <div style="color:#fff;font-size:14px;font-weight:700">工程师</div>
+      <div style="color:rgba(255,255,255,.7);font-size:12px;margin-top:4px">讲真实飞行与数据处理，增强技术可信度</div>
+    </div>
+    <div style="padding:20px 24px;background:var(--grad);border-radius:var(--radius-lg);text-align:center">
+      <div style="font-size:22px;margin-bottom:8px">📍</div>
+      <div style="color:#fff;font-size:14px;font-weight:700">项目案例</div>
+      <div style="color:rgba(255,255,255,.7);font-size:12px;margin-top:4px">讲城市治理、园区巡检、应急保障</div>
+    </div>
+  </div>
+  <div class="deck-footer"><span>04 · 行业案例</span><span>5 / 13</span></div>
+</section>
+
+<!-- ===== SLIDE 6: 目标客户 ===== -->
+<section class="slide" data-title="目标客户">
+  <p class="kicker">05 · Target Customers</p>
+  <h2 class="h2" style="font-size:40px">三类客户 · 三个购买理由 · 三个市场抓手</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px">
+    <div class="card" style="border-top:3px solid var(--accent)">
+      <div style="font-size:24px;margin-bottom:8px">🏛️</div>
+      <div style="color:var(--text-1);font-size:15px;font-weight:700;margin-bottom:2px">政府治理类</div>
+      <div style="color:var(--text-3);font-size:12px;margin-bottom:14px">公安 · 应急 · 城管 · 环保 · 自然资源 · 水务 · 林业</div>
+      <div style="border-top:1px solid var(--border);padding-top:12px;margin-bottom:10px">
+        <div style="color:var(--accent);font-size:11px;font-weight:700;margin-bottom:6px">🎯 购买的是</div>
+        <div style="color:var(--text-2);font-size:13px;line-height:1.7">快速发现问题 · 降低人员风险<br>可追溯数据 · 指挥调度效率<br>问题发现→派单→整改→复查闭环</div>
+      </div>
+      <div>
+        <div style="color:var(--accent);font-size:11px;font-weight:700;margin-bottom:6px">📣 市场抓手</div>
+        <div style="color:var(--text-2);font-size:13px;line-height:1.7">政府汇报PPT · 重大活动保障案例<br>应急救援方案 · 环保巡查案例<br>数据闭环流程图 · 合规飞行说明</div>
+      </div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--accent-2)">
+      <div style="font-size:24px;margin-bottom:8px">🏭</div>
+      <div style="color:var(--text-1);font-size:15px;font-weight:700;margin-bottom:2px">园区与大型企业</div>
+      <div style="color:var(--text-3);font-size:12px;margin-bottom:14px">产业园区 · 物流园区 · 工厂 · 能源设施 · 仓储基地</div>
+      <div style="border-top:1px solid var(--border);padding-top:12px;margin-bottom:10px">
+        <div style="color:var(--accent-2);font-size:11px;font-weight:700;margin-bottom:6px">🎯 购买的是</div>
+        <div style="color:var(--text-2);font-size:13px;line-height:1.7">夜间巡检降成本 · 安防消防压力<br>设备巡检频次不足<br>招商展示缺动态可视化</div>
+      </div>
+      <div>
+        <div style="color:var(--accent-2);font-size:11px;font-weight:700;margin-bottom:6px">📣 市场抓手</div>
+        <div style="color:var(--text-2);font-size:13px;line-height:1.7">园区低空巡检方案 · 夜间无人值守<br>ROI粗算表 · 数字孪生招商展示<br>任务现场视频</div>
+      </div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--accent-3)">
+      <div style="font-size:24px;margin-bottom:8px">🔗</div>
+      <div style="color:var(--text-1);font-size:15px;font-weight:700;margin-bottom:2px">生态合作伙伴</div>
+      <div style="color:var(--text-3);font-size:12px;margin-bottom:14px">系统集成商 · 安防公司 · 测绘公司 · 智慧城市公司</div>
+      <div style="border-top:1px solid var(--border);padding-top:12px;margin-bottom:10px">
+        <div style="color:var(--accent-3);font-size:11px;font-weight:700;margin-bottom:6px">🎯 需要的是</div>
+        <div style="color:var(--text-2);font-size:13px;line-height:1.7">自身方案缺少低空采集能力<br>不想自建飞行队伍<br>联合投标需要低空能力模块</div>
+      </div>
+      <div>
+        <div style="color:var(--accent-3);font-size:11px;font-weight:700;margin-bottom:6px">📣 市场抓手</div>
+        <div style="color:var(--text-2);font-size:13px;line-height:1.7">合作伙伴能力手册 · 标书能力模块<br>联合解决方案模板 · 数据成果样例包</div>
+      </div>
+    </div>
+  </div>
+  <div class="deck-footer"><span>05 · 目标客户</span><span>6 / 13</span></div>
+</section>
+
+<!-- ===== SLIDE 7: B端市场策略 ===== -->
+<section class="slide" data-title="B端策略">
+  <p class="kicker">06 · B2B Strategy</p>
+  <h2 class="h2" style="font-size:40px">建立行业信任 → 形成有效线索 → 降低客户理解成本</h2>
+  <p class="dim" style="margin-bottom:24px">市场部不直接承担回款，但对有效线索、销售物料使用率、方案沟通转化率负责</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px">
+    <div>
+      <div class="kicker" style="margin-bottom:14px">内容类型</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="card" style="border-left:3px solid var(--accent);padding:18px 20px">
+          <div style="color:var(--accent);font-size:12px;font-weight:700;margin-bottom:6px">📄 白皮书</div>
+          <div style="color:var(--text-2);font-size:13px;line-height:1.6">《低空数字运营赋能城市治理场景白皮书》</div>
+        </div>
+        <div class="card" style="border-left:3px solid var(--accent);padding:18px 20px">
+          <div style="color:var(--accent);font-size:12px;font-weight:700;margin-bottom:6px">📋 一页纸方案</div>
+          <div style="color:var(--text-2);font-size:13px;line-height:1.6">园区巡检 · 应急救援 · 环保巡查 · 招商展示</div>
+        </div>
+        <div class="card" style="border-left:3px solid var(--accent);padding:18px 20px">
+          <div style="color:var(--accent);font-size:12px;font-weight:700;margin-bottom:6px">🏆 客户案例</div>
+          <div style="color:var(--text-2);font-size:13px;line-height:1.6">大型活动保障 · 城市治理 · 生态巡查</div>
+        </div>
+        <div class="card" style="border-left:3px solid var(--accent);padding:18px 20px">
+          <div style="color:var(--accent);font-size:12px;font-weight:700;margin-bottom:6px">⚖️ 竞品对比卡</div>
+          <div style="color:var(--text-2);font-size:13px;line-height:1.6">买设备 · 自建团队 · 采购服务TCO对比</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="kicker" style="color:var(--accent-2);margin-bottom:14px">线索分级体系</div>
+      <div class="table-wrap">
+        <table class="table">
+          <thead><tr><th style="width:10%">层级</th><th style="width:50%">定义</th><th style="width:40%">市场动作</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--text-3);font-weight:800">L1</td><td style="font-size:13px">关注内容 · 展会扫码 · 下载资料</td><td style="font-size:13px">内容培育，记录来源</td></tr>
+            <tr><td style="color:var(--accent);font-weight:800">L2</td><td style="font-size:13px">主动咨询 · 索取方案 · 参加活动</td><td style="font-size:13px">提供行业资料包，销售初步联系</td></tr>
+            <tr><td style="color:var(--accent-2);font-weight:800">L3</td><td style="font-size:13px">提供具体场景，愿意沟通</td><td style="font-size:13px">定制一页纸方案，约见/演示</td></tr>
+            <tr><td style="color:var(--accent-3);font-weight:800">L4</td><td style="font-size:13px">进入方案交流 · 试点 · 招标</td><td style="font-size:13px">支持PPT、案例、标书模块</td></tr>
+            <tr><td style="color:#6366f1;font-weight:800">L5</td><td style="font-size:13px">立项 · 招投标 · 成交复盘</td><td style="font-size:13px">沉淀案例与数据资产，项目复盘</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="deck-footer"><span>06 · B端市场策略</span><span>7 / 13</span></div>
+</section>
+
+<!-- ===== SLIDE 8: B端支撑 ===== -->
+<section class="slide dark" data-title="B端支撑">
+  <p class="kicker">07 · Internal Support</p>
+  <h2 class="h2" style="color:#fff;font-size:42px">四个支撑方向 · 围绕销售与项目落地</h2>
+  <p class="lede" style="color:rgba(240,244,249,.7);margin-bottom:28px">市场部是公司对内对外的连接器，把市场端信息转化为可复用的业务资产</p>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
+    <div class="feature-card" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <span style="font-size:20px">🎯</span>
+        <div style="color:#fff;font-size:15px;font-weight:700">支撑销售</div>
+      </div>
+      <div style="color:rgba(240,244,249,.7);font-size:13px;line-height:1.7;margin-bottom:10px">
+        客户拜访资料包 · 行业版本PPT · 购买理由卡 · 异议处理库 · 竞品对比卡 · 案例库 · 线索复盘表
+      </div>
+      <div style="padding:8px 12px;background:rgba(31,111,235,.15);border-radius:8px;font-size:12px;color:#79c0ff;font-weight:600">目标：让销售更快讲清楚携恩价值，减少重复解释</div>
+    </div>
+    <div class="feature-card" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <span style="font-size:20px">⚙️</span>
+        <div style="color:#fff;font-size:15px;font-weight:700">支撑产品/解决方案</div>
+      </div>
+      <div style="color:rgba(240,244,249,.7);font-size:13px;line-height:1.7;margin-bottom:10px">
+        客户需求月报 · 竞品功能对比 · 场景功能优先级 · 客户语言转产品语言
+      </div>
+      <div style="padding:8px 12px;background:rgba(14,165,233,.15);border-radius:8px;font-size:12px;color:#7dd3fc;font-weight:600">目标：把市场端客户问题整理成产品和方案团队可判断的信息</div>
+    </div>
+    <div class="feature-card" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <span style="font-size:20px">📊</span>
+        <div style="color:#fff;font-size:15px;font-weight:700">支撑交付/数据团队</div>
+      </div>
+      <div style="color:rgba(240,244,249,.7);font-size:13px;line-height:1.7;margin-bottom:10px">
+        项目复盘访谈表 · 作业链案例模板 · 数据成果展示模板 · 前后对比材料
+      </div>
+      <div style="padding:8px 12px;background:rgba(99,102,241,.15);border-radius:8px;font-size:12px;color:#a5b4fc;font-weight:600">目标：把交付现场和数据成果沉淀成案例资产，避免项目做完就散掉</div>
+    </div>
+    <div class="feature-card" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <span style="font-size:20px">📈</span>
+        <div style="color:#fff;font-size:15px;font-weight:700">支撑管理层</div>
+      </div>
+      <div style="color:rgba(240,244,249,.7);font-size:13px;line-height:1.7;margin-bottom:10px">
+        市场情报月报 · 政策与招标机会表 · 竞品动态追踪 · 重点行业增长判断
+      </div>
+      <div style="padding:8px 12px;background:rgba(14,165,233,.12);border-radius:8px;font-size:12px;color:#7dd3fc;font-weight:600">目标：帮助判断主攻行业、重点客户和资源投入方向</div>
+    </div>
+  </div>
+  <div class="deck-footer"><span>07 · B端支撑</span><span>8 / 13</span></div>
+</section>
+
+<!-- ===== SLIDE 9: C端传播 ===== -->
+<section class="slide" data-title="C端传播">
+  <p class="kicker">08 · C-end Strategy</p>
+  <h2 class="h2" style="font-size:40px">为B端信任建设提供杠杆 · 三类IP独立运营</h2>
+  <p class="dim" style="margin-bottom:24px">C端不是单独追求流量，而是为B端信任建设提供社会证明和舆论支撑</p>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+    <div class="card" style="border-top:3px solid var(--accent)">
+      <div style="font-size:24px;margin-bottom:8px">👤</div>
+      <div style="color:var(--accent);font-size:14px;font-weight:700;margin-bottom:2px">创始人/高管IP</div>
+      <div style="color:var(--text-3);font-size:12px;margin-bottom:12px">低空经济实战派 · 城市低空数字运营观察者</div>
+      <div style="border-top:1px solid var(--border);padding-top:10px;margin-bottom:10px">
+        <div style="color:var(--text-2);font-size:12px;line-height:1.7">
+          低空经济为什么不只是飞行汽车<br>
+          为什么客户更适合买服务而不是自建团队<br>
+          成都为什么适合发展工业无人机应用
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--text-3)">微信公众号 · LinkedIn · 钛媒体</div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--accent-2)">
+      <div style="font-size:24px;margin-bottom:8px">🏢</div>
+      <div style="color:var(--accent-2);font-size:14px;font-weight:700;margin-bottom:2px">公司品牌号</div>
+      <div style="color:var(--text-3);font-size:12px;margin-bottom:12px">官方声音 · 产品动态 · 行业洞察</div>
+      <div style="border-top:1px solid var(--border);padding-top:10px;margin-bottom:10px">
+        <div style="color:var(--text-2);font-size:12px;line-height:1.7">
+          官方公众号 · 视频号 · 抖音官方账号<br>
+          知乎机构号 · 36氪媒体矩阵
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--text-3)">月更：行业报告解读 + 季度大事</div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--accent-3)">
+      <div style="font-size:24px;margin-bottom:8px">🎬</div>
+      <div style="color:var(--accent-3);font-size:14px;font-weight:700;margin-bottom:2px">内容矩阵</div>
+      <div style="color:var(--text-3);font-size:12px;margin-bottom:12px">客户案例 · 项目纪实 · 产品演示</div>
+      <div style="border-top:1px solid var(--border);padding-top:10px;margin-bottom:10px">
+        <div style="color:var(--text-2);font-size:12px;line-height:1.7">
+          抖音/小红书：场景故事 + 任务现场<br>
+          B站：深度技术讲解 + 行业科普
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--text-3)">周更：场景短视频 + 月更：深度内容</div>
+    </div>
+  </div>
+  <div class="deck-footer"><span>08 · C端传播</span><span>9 / 13</span></div>
+</section>
+
+<!-- ===== SLIDE 10: AI赋能 ===== -->
+<section class="slide" data-title="AI赋能">
+  <p class="kicker">09 · AI Empowerment</p>
+  <h2 class="h2" style="font-size:40px">AI负责提效和标准化 · 市场经理负责判断和审核</h2>
+  <p class="dim" style="margin-bottom:24px">AI是提效系统，不是决策替代；所有AI输出必须经人工审核后才能使用</p>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+    <div class="card" style="border-left:3px solid var(--accent)">
+      <div style="color:var(--accent);font-size:12px;font-weight:800;margin-bottom:12px;letter-spacing:.06em">📚 公司数字资料库</div>
+      <div style="color:var(--text-2);font-size:13px;line-height:1.7;margin-bottom:12px">
+        历史方案 · 客户案例 · 产品参数 · 竞品对比 · 行业报告<br>
+        结构化：标签 + 摘要 + 来源
+      </div>
+      <div style="font-size:12px;color:var(--text-3)">AI辅助检索和摘要提取</div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--accent-2)">
+      <div style="color:var(--accent-2);font-size:12px;font-weight:800;margin-bottom:12px;letter-spacing:.06em">🔍 市场情报AI助手</div>
+      <div style="color:var(--text-2);font-size:13px;line-height:1.7;margin-bottom:12px">
+        政策追踪 · 招标信息 · 竞品动态 · 客户动态<br>
+        自动摘要 + 预警提示
+      </div>
+      <div style="font-size:12px;color:var(--text-3)">AI做初筛，市场经理判断优先级</div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--accent-3)">
+      <div style="color:var(--accent-3);font-size:12px;font-weight:800;margin-bottom:12px;letter-spacing:.06em">✍️ 案例与方案生成助手</div>
+      <div style="color:var(--text-2);font-size:13px;line-height:1.7;margin-bottom:12px">
+        PPT初稿 · 方案框架 · 竞品对比卡 · 客户案例写作<br>
+        AI生成初稿，人工审核后使用
+      </div>
+      <div style="font-size:12px;color:var(--text-3)">市场经理审核判断，不能直接发给客户</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:14px;margin-top:20px;padding:16px 20px;background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.2);border-radius:var(--radius)">
+    <div style="font-size:22px">🚨</div>
+    <div>
+      <div style="color:#dc2626;font-size:13px;font-weight:800;margin-bottom:4px">红线</div>
+      <div style="color:var(--text-2);font-size:13px">所有AI输出必须由市场、销售、产品或交付人员审核后使用，不能直接发给客户，不能作为决策依据</div>
+    </div>
+  </div>
+  <div class="deck-footer"><span>09 · AI赋能</span><span>10 / 13</span></div>
+</section>
+
+<!-- ===== SLIDE 11: 入职切入 ===== -->
+<section class="slide" data-title="入职切入">
+  <p class="kicker">10 · 30-60-90 Plan</p>
+  <h2 class="h2" style="font-size:40px">入职后如何诊断并交付成果</h2>
+  <p class="dim" style="margin-bottom:24px">不急于提方案，先理解真实业务状态和团队节奏</p>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+    <div class="feature-card" style="border-top:3px solid var(--accent)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div style="font-size:32px;font-weight:900;color:var(--accent)">30天</div>
+        <div style="font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.08em">诊断期</div>
+      </div>
+      <div style="color:var(--text-2);font-size:13px;line-height:1.7;margin-bottom:14px">
+        · 访谈销售团队，理解目前最大障碍<br>
+        · 整理现有内容和资料清单<br>
+        · 了解行业客户决策链和购买场景<br>
+        · 对齐管理层对市场部的期望
+      </div>
+      <div style="padding:8px 12px;background:rgba(31,111,235,.06);border-radius:8px;font-size:12px;color:var(--accent);font-weight:600">交付：市场现状诊断报告</div>
+    </div>
+    <div class="feature-card" style="border-top:3px solid var(--accent-2)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div style="font-size:32px;font-weight:900;color:var(--accent-2)">60天</div>
+        <div style="font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.08em">建设期</div>
+      </div>
+      <div style="color:var(--text-2);font-size:13px;line-height:1.7;margin-bottom:14px">
+        · 建立竞品动态追踪机制<br>
+        · 搭建线索分级体系和CRM记录<br>
+        · 完成重点客户案例2-3个<br>
+        · 制作销售工具包（PPT+对比卡+FAQ）
+      </div>
+      <div style="padding:8px 12px;background:rgba(14,165,233,.06);border-radius:8px;font-size:12px;color:var(--accent-2);font-weight:600">交付：市场体系基础框架</div>
+    </div>
+    <div class="feature-card" style="border-top:3px solid var(--accent-3)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div style="font-size:32px;font-weight:900;color:var(--accent-3)">90天</div>
+        <div style="font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.08em">验证期</div>
+      </div>
+      <div style="color:var(--text-2);font-size:13px;line-height:1.7;margin-bottom:14px">
+        · 验证内容线索转化率<br>
+        · 完成行业白皮书初稿<br>
+        · 协办或参展1场行业活动<br>
+        · 提出下一季度市场策略方向
+      </div>
+      <div style="padding:8px 12px;background:rgba(99,102,241,.06);border-radius:8px;font-size:12px;color:var(--accent-3);font-weight:600">交付：市场体系验证报告</div>
+    </div>
+  </div>
+  <div class="deck-footer"><span>10 · 入职切入</span><span>11 / 13</span></div>
+</section>
+
+<!-- ===== SLIDE 12: 总结 ===== -->
+<section class="slide dark" data-title="总结">
+  <p class="kicker">Summary · MY VALUE</p>
+  <h2 class="h2" style="color:#fff;font-size:44px">把低空技术能力<br>转化为客户语言、销售资产<br>与可复用市场体系</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:32px">
+    <div style="text-align:center;padding:28px 20px;background:rgba(255,255,255,.06);border-radius:var(--radius-lg);border:1px solid rgba(255,255,255,.1)">
+      <div style="font-size:32px;margin-bottom:12px">🌐</div>
+      <div style="color:#fff;font-size:15px;font-weight:700;margin-bottom:6px">市场转译者</div>
+      <div style="color:rgba(240,244,249,.65);font-size:13px;line-height:1.6">把低空技术能力翻译成客户购买理由</div>
+    </div>
+    <div style="text-align:center;padding:28px 20px;background:rgba(255,255,255,.06);border-radius:var(--radius-lg);border:1px solid rgba(255,255,255,.1)">
+      <div style="font-size:32px;margin-bottom:12px">📦</div>
+      <div style="color:#fff;font-size:15px;font-weight:700;margin-bottom:6px">销售赋能者</div>
+      <div style="color:rgba(240,244,249,.65);font-size:13px;line-height:1.6">把项目经验沉淀成销售可复用案例</div>
+    </div>
+    <div style="text-align:center;padding:28px 20px;background:rgba(255,255,255,.06);border-radius:var(--radius-lg);border:1px solid rgba(255,255,255,.1)">
+      <div style="font-size:32px;margin-bottom:12px">📣</div>
+      <div style="color:#fff;font-size:15px;font-weight:700;margin-bottom:6px">内容资产者</div>
+      <div style="color:rgba(240,244,249,.65);font-size:13px;line-height:1.6">把市场内容转化为客户信任和有效线索</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:32px">
+    <div style="width:60px;height:3px;background:var(--grad);border-radius:2px"></div>
+    <div style="font-size:13px;font-weight:600;color:rgba(240,244,249,.5);letter-spacing:.08em">谢谢</div>
+    <div style="width:60px;height:3px;background:var(--grad);border-radius:2px"></div>
+  </div>
+  <div class="deck-footer"><span>yan zhiqiang · 面试策略版</span><span>13 / 13</span></div>
+</section>
+
+</div><!-- .deck -->
+
+<script src="assets/runtime.js"></script>
+<script src="editable-layer/wheel-nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+:root {
+  --htmlppt-edit-accent: #0f766e;
+  --htmlppt-edit-ink: #111827;
+  --htmlppt-edit-muted: #667085;
+  --htmlppt-edit-line: #d0d5dd;
+}
+
+.htmlppt-edit-toolbar {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--htmlppt-edit-line);
+  border-radius: 8px;
+  box-shadow: 0 18px 42px rgba(16, 24, 40, 0.18);
+  color: var(--htmlppt-edit-ink);
+  display: flex;
+  gap: 8px;
+  bottom: 16px;
+  left: 16px;
+  padding: 10px;
+  position: fixed;
+  z-index: 99999;
+  backdrop-filter: blur(14px);
+}
+
+.htmlppt-edit-toolbar button {
+  background: #fff;
+  border: 1px solid var(--htmlppt-edit-line);
+  border-radius: 7px;
+  color: var(--htmlppt-edit-ink);
+  cursor: pointer;
+  font: 700 13px/1 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  min-height: 34px;
+  padding: 0 10px;
+}
+
+.htmlppt-edit-toolbar button[data-primary="true"] {
+  background: var(--htmlppt-edit-accent);
+  border-color: var(--htmlppt-edit-accent);
+  color: #fff;
+}
+
+.htmlppt-edit-status {
+  color: var(--htmlppt-edit-muted);
+  font: 700 12px/1 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  min-width: 92px;
+}
+
+.htmlppt-edit-panel {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--htmlppt-edit-line);
+  border-radius: 8px;
+  box-shadow: 0 18px 42px rgba(16, 24, 40, 0.18);
+  color: var(--htmlppt-edit-ink);
+  display: none;
+  gap: 8px;
+  padding: 12px;
+  position: fixed;
+  right: 16px;
+  top: 16px;
+  width: min(360px, calc(100vw - 32px));
+  z-index: 99999;
+  backdrop-filter: blur(14px);
+}
+
+body.htmlppt-editing .htmlppt-edit-panel {
+  display: grid;
+}
+
+.htmlppt-edit-panel label {
+  color: var(--htmlppt-edit-muted);
+  font: 800 11px/1 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.htmlppt-edit-panel input {
+  border: 1px solid var(--htmlppt-edit-line);
+  border-radius: 7px;
+  color: var(--htmlppt-edit-ink);
+  font: 13px/1.35 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  padding: 9px;
+  width: 100%;
+}
+
+.htmlppt-edit-panel-actions {
+  display: grid;
+  gap: 7px;
+  grid-template-columns: 1fr;
+}
+
+.htmlppt-edit-panel-actions button {
+  background: #fff;
+  border: 1px solid var(--htmlppt-edit-line);
+  border-radius: 7px;
+  color: var(--htmlppt-edit-ink);
+  cursor: pointer;
+  font: 700 13px/1 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  min-height: 34px;
+}
+
+.htmlppt-edit-panel-actions button[data-danger="true"] {
+  color: #b42318;
+}
+
+.htmlppt-edit-link {
+  color: #315cff;
+  text-decoration: underline;
+  text-decoration-color: var(--htmlppt-edit-accent);
+  text-decoration-thickness: 0.09em;
+  text-underline-offset: 0.15em;
+}
+
+body.htmlppt-editing [data-htmlppt-editable="true"] {
+  outline: 1px dashed rgba(15, 118, 110, 0.45);
+  outline-offset: 3px;
+}
+
+body.htmlppt-editing [data-htmlppt-editable="true"]:focus {
+  background: rgba(255, 255, 255, 0.78);
+  outline: 2px solid rgba(15, 118, 110, 0.78);
+}
+
+body.htmlppt-editing .htmlppt-selected {
+  outline: 3px solid rgba(15, 118, 110, 0.9) !important;
+}
